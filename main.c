@@ -92,30 +92,6 @@ int main( void )
 
     while( 1 )
     {
-    	/*
-            for( int8_t i = 0; i < 4; i++ )
-            {
-                word[i] = message[j][i];
-            }
-
-
-            if( timer_counter - timer >= 2000 )
-            {
-
-                timer = timer_counter;
-
-                j += 1;
-
-                if( j > 6 )
-                {
-                    j = 0;
-                }
-            }
-
-            ind_print_string(word);
-//            led_timer();
-
-    	 */
     	adc_value = ADC_convert();
 
 		if (adc_value > 307)
