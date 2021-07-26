@@ -42,6 +42,30 @@ tim1_init( void )
 }
 
 
+void
+ADC_Init( void )
+{
+	ADCSRA |= (1 << ADEN);										//we allow the ADC to work
+
+	ADCSRA |= (1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2);		//frequency of discrediting = 125k Hz
+
+	ADMUX &= ~((1 << REFS1) | (1 << REFS0));
+
+	ADMUX &= ~(1 << ADLAR); 									//right-hand alignment
+
+	ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX0));
+	ADMUX |= (1 << MUX1);										//use ADC2
+}
+
+unsigned int
+ADC_convert (void)
+{
+	ADCSRA |= (1 << ADSC);										//launch ADC
+	while((ADCSRA & (1<<ADSC)));
+
+	return (unsigned int) ADC;
+}
+
 
 int main( void )
 {
@@ -50,17 +74,8 @@ int main( void )
 
 	DDRC &= ~(1 << 2);											//working ADC port
 
-	ADCSRA |= (1 << ADEN);										//we allow the ADC to work
-	ADCSRA |= (1 << ACSR);										//continuous transformation   //?ADFR
-	ADCSRA |= (1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2);		//frequency of discrediting = 125k Hz
+	unsigned int adc_value;
 
-	ADMUX |= (1 << REFS1) | (1 << REFS0);						//Internal 2.56 V reference
-	ADMUX &= ~(1 << ADLAR); 									//right-hand alignment
-
-	ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX0));
-	ADMUX |= (1 << MUX1);										//use ADC2
-
-	ADCSRA |= (1 << ADSC);										//launch ADC
 
 //    uint16_t  timer = 0;
 //    char message[6][5] = {"FAUL", "HEAT", "COLD", "1234", " HI ", " LO "};
@@ -71,6 +86,7 @@ int main( void )
 
     ind_init();
     tim1_init();
+    ADC_Init();
 
     sei();
 
@@ -100,26 +116,27 @@ int main( void )
 //            led_timer();
 
     	 */
-    	if (ADCSRA & (1 << 4))
-    	{
-    		if (ADC >= 600)
-    		{
-    			PORTD |= (1 << 5);
-    			PORTD &= ~((1 << 6) | (1 << 7));
-    		}
-    		if (ADC >= 600 && ADC < 520)
-    		{
-    			PORTD |= (1 << 6);
-    			PORTD &= ~((1 << 5) | (1 << 7));
-    		}
-    		if (ADC < 520)
-    		{
-    			PORTD |= (1 << 7);
-    			PORTD &= ~((1 << 5) | (1 << 6));
-    		}
+    	adc_value = ADC_convert();
 
-    		ADCSRA |= (1 << 4);
-    	}
+		if (adc_value > 307)
+		{
+			PORTD |= (1 << 5);
+			PORTD &= ~((1 << 6) | (1 << 7));
+		}
+		else
+		if (adc_value <= 307 && adc_value >= 266)
+		{
+			PORTD |= (1 << 6);
+			PORTD &= ~((1 << 5) | (1 << 7));
+		}
+		else
+		if (adc_value < 266)
+		{
+			PORTD |= (1 << 7);
+			PORTD &= ~((1 << 5) | (1 << 6));
+		}
+
+
     }
 
     return 0;

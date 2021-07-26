@@ -1254,22 +1254,22 @@
  855               		.file 2 "c:\\bin\\avr-gcc-8.3.0-x64-mingw\\lib\\gcc\\avr\\8.3.0\\include\\stdint-gcc.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 indicator.c
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccKBRilk.s:2      *ABS*:000000000000003e __SP_H__
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccKBRilk.s:3      *ABS*:000000000000003d __SP_L__
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccKBRilk.s:4      *ABS*:000000000000003f __SREG__
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccKBRilk.s:5      *ABS*:0000000000000000 __tmp_reg__
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccKBRilk.s:6      *ABS*:0000000000000001 __zero_reg__
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccKBRilk.s:12     .text.clock_signal:0000000000000000 clock_signal
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccKBRilk.s:54     .text.button_state_get:0000000000000000 button_state_get
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccKBRilk.s:82     .text.ind_led_set:0000000000000000 ind_led_set
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccKBRilk.s:777    .bss.ind_led_state:0000000000000000 ind_led_state
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccKBRilk.s:130    .text.ind_print_string:0000000000000000 ind_print_string
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccKBRilk.s:782    .bss.indicator_data:0000000000000000 indicator_data
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccKBRilk.s:787    .rodata.ind_ascii_table:0000000000000000 ind_ascii_table
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccKBRilk.s:191    .text.ind_print_dec:0000000000000000 ind_print_dec
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccKBRilk.s:385    .text.ind_init:0000000000000000 ind_init
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccKBRilk.s:418    .text.__vector_16:0000000000000000 __vector_16
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccKBRilk.s:772    .bss.digit.1092:0000000000000000 digit.1092
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccH4lBMM.s:2      *ABS*:000000000000003e __SP_H__
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccH4lBMM.s:3      *ABS*:000000000000003d __SP_L__
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccH4lBMM.s:4      *ABS*:000000000000003f __SREG__
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccH4lBMM.s:5      *ABS*:0000000000000000 __tmp_reg__
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccH4lBMM.s:6      *ABS*:0000000000000001 __zero_reg__
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccH4lBMM.s:12     .text.clock_signal:0000000000000000 clock_signal
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccH4lBMM.s:54     .text.button_state_get:0000000000000000 button_state_get
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccH4lBMM.s:82     .text.ind_led_set:0000000000000000 ind_led_set
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccH4lBMM.s:777    .bss.ind_led_state:0000000000000000 ind_led_state
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccH4lBMM.s:130    .text.ind_print_string:0000000000000000 ind_print_string
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccH4lBMM.s:782    .bss.indicator_data:0000000000000000 indicator_data
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccH4lBMM.s:787    .rodata.ind_ascii_table:0000000000000000 ind_ascii_table
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccH4lBMM.s:191    .text.ind_print_dec:0000000000000000 ind_print_dec
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccH4lBMM.s:385    .text.ind_init:0000000000000000 ind_init
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccH4lBMM.s:418    .text.__vector_16:0000000000000000 __vector_16
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccH4lBMM.s:772    .bss.digit.1092:0000000000000000 digit.1092
 
 UNDEFINED SYMBOLS
 __prologue_saves__

@@ -122,14 +122,14 @@
   81 0022 0895      		ret
   82               		.cfi_endproc
   83               	.LFE7:
-  85               		.section	.text.startup.main,"ax",@progbits
-  86               	.global	main
-  88               	main:
+  85               		.section	.text.ADC_Init,"ax",@progbits
+  86               	.global	ADC_Init
+  88               	ADC_Init:
   89               	.LFB8:
   43:main.c        **** 
   44:main.c        **** 
-  45:main.c        **** 
-  46:main.c        **** int main( void )
+  45:main.c        **** void
+  46:main.c        **** ADC_Init( void )
   47:main.c        **** {
   90               		.loc 1 47 1 is_stmt 1 view -0
   91               		.cfi_startproc
@@ -137,250 +137,297 @@
   93               	/* frame size = 0 */
   94               	/* stack size = 0 */
   95               	.L__stack_usage = 0
-  48:main.c        **** 	DDRD |= (1 << 5) | (1 << 6) | (1 << 7);						//test ADC
+  48:main.c        **** 	ADCSRA |= (1 << ADEN);										//we allow the ADC to work
   96               		.loc 1 48 2 view .LVU17
-  97               		.loc 1 48 7 is_stmt 0 view .LVU18
-  98 0000 8AB1      		in r24,0xa
-  99 0002 806E      		ori r24,lo8(-32)
- 100 0004 8AB9      		out 0xa,r24
-  49:main.c        **** 	PORTD &= ~( (1 << 5) | (1 << 6) | (1 << 7) );
- 101               		.loc 1 49 2 is_stmt 1 view .LVU19
- 102               		.loc 1 49 8 is_stmt 0 view .LVU20
- 103 0006 8BB1      		in r24,0xb
- 104 0008 8F71      		andi r24,lo8(31)
- 105 000a 8BB9      		out 0xb,r24
-  50:main.c        **** 
-  51:main.c        **** 	DDRC &= ~(1 << 2);											//working ADC port
- 106               		.loc 1 51 2 is_stmt 1 view .LVU21
- 107               		.loc 1 51 7 is_stmt 0 view .LVU22
- 108 000c 3A98      		cbi 0x7,2
-  52:main.c        **** 
-  53:main.c        **** 	ADCSRA |= (1 << ADEN);										//we allow the ADC to work
- 109               		.loc 1 53 2 is_stmt 1 view .LVU23
- 110               		.loc 1 53 9 is_stmt 0 view .LVU24
- 111 000e 8091 7A00 		lds r24,122
- 112 0012 8068      		ori r24,lo8(-128)
- 113 0014 8093 7A00 		sts 122,r24
-  54:main.c        **** 	ADCSRA |= (1 << ACSR);										//continuous transformation   //?ADFR
- 114               		.loc 1 54 2 is_stmt 1 view .LVU25
- 115               		.loc 1 54 18 is_stmt 0 view .LVU26
- 116 0018 90B7      		in r25,0x30
- 117               		.loc 1 54 9 view .LVU27
- 118 001a 8091 7A00 		lds r24,122
- 119               		.loc 1 54 15 view .LVU28
- 120 001e 21E0      		ldi r18,lo8(1)
- 121 0020 30E0      		ldi r19,0
- 122 0022 00C0      		rjmp 2f
- 123               		1:
- 124 0024 220F      		lsl r18
- 125               		2:
- 126 0026 9A95      		dec r25
- 127 0028 02F4      		brpl 1b
- 128               		.loc 1 54 9 view .LVU29
- 129 002a 822B      		or r24,r18
- 130 002c 8093 7A00 		sts 122,r24
-  55:main.c        **** 	ADCSRA |= (1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2);		//frequency of discrediting = 125k Hz
- 131               		.loc 1 55 2 is_stmt 1 view .LVU30
- 132               		.loc 1 55 9 is_stmt 0 view .LVU31
- 133 0030 8091 7A00 		lds r24,122
- 134 0034 8760      		ori r24,lo8(7)
- 135 0036 8093 7A00 		sts 122,r24
-  56:main.c        **** 
-  57:main.c        **** 	ADMUX |= (1 << REFS1) | (1 << REFS0);						//Internal 2.56 V reference
- 136               		.loc 1 57 2 is_stmt 1 view .LVU32
- 137               		.loc 1 57 8 is_stmt 0 view .LVU33
- 138 003a 8091 7C00 		lds r24,124
- 139 003e 806C      		ori r24,lo8(-64)
- 140 0040 8093 7C00 		sts 124,r24
-  58:main.c        **** 	ADMUX &= ~(1 << ADLAR); 									//right-hand alignment
- 141               		.loc 1 58 2 is_stmt 1 view .LVU34
- 142               		.loc 1 58 8 is_stmt 0 view .LVU35
- 143 0044 8091 7C00 		lds r24,124
- 144 0048 8F7D      		andi r24,lo8(-33)
- 145 004a 8093 7C00 		sts 124,r24
+  97               		.loc 1 48 9 is_stmt 0 view .LVU18
+  98 0000 EAE7      		ldi r30,lo8(122)
+  99 0002 F0E0      		ldi r31,0
+ 100 0004 8081      		ld r24,Z
+ 101 0006 8068      		ori r24,lo8(-128)
+ 102 0008 8083      		st Z,r24
+  49:main.c        **** 
+  50:main.c        **** 	ADCSRA |= (1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2);		//frequency of discrediting = 125k Hz
+ 103               		.loc 1 50 2 is_stmt 1 view .LVU19
+ 104               		.loc 1 50 9 is_stmt 0 view .LVU20
+ 105 000a 8081      		ld r24,Z
+ 106 000c 8760      		ori r24,lo8(7)
+ 107 000e 8083      		st Z,r24
+  51:main.c        **** 
+  52:main.c        **** 	ADMUX &= ~((1 << REFS1) | (1 << REFS0));
+ 108               		.loc 1 52 2 is_stmt 1 view .LVU21
+ 109               		.loc 1 52 8 is_stmt 0 view .LVU22
+ 110 0010 ECE7      		ldi r30,lo8(124)
+ 111 0012 F0E0      		ldi r31,0
+ 112 0014 8081      		ld r24,Z
+ 113 0016 8F73      		andi r24,lo8(63)
+ 114 0018 8083      		st Z,r24
+  53:main.c        **** 
+  54:main.c        **** 	ADMUX &= ~(1 << ADLAR); 									//right-hand alignment
+ 115               		.loc 1 54 2 is_stmt 1 view .LVU23
+ 116               		.loc 1 54 8 is_stmt 0 view .LVU24
+ 117 001a 8081      		ld r24,Z
+ 118 001c 8F7D      		andi r24,lo8(-33)
+ 119 001e 8083      		st Z,r24
+  55:main.c        **** 
+  56:main.c        **** 	ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX0));
+ 120               		.loc 1 56 2 is_stmt 1 view .LVU25
+ 121               		.loc 1 56 8 is_stmt 0 view .LVU26
+ 122 0020 8081      		ld r24,Z
+ 123 0022 827F      		andi r24,lo8(-14)
+ 124 0024 8083      		st Z,r24
+  57:main.c        **** 	ADMUX |= (1 << MUX1);										//use ADC2
+ 125               		.loc 1 57 2 is_stmt 1 view .LVU27
+ 126               		.loc 1 57 8 is_stmt 0 view .LVU28
+ 127 0026 8081      		ld r24,Z
+ 128 0028 8260      		ori r24,lo8(2)
+ 129 002a 8083      		st Z,r24
+ 130               	/* epilogue start */
+  58:main.c        **** }
+ 131               		.loc 1 58 1 view .LVU29
+ 132 002c 0895      		ret
+ 133               		.cfi_endproc
+ 134               	.LFE8:
+ 136               		.section	.text.ADC_convert,"ax",@progbits
+ 137               	.global	ADC_convert
+ 139               	ADC_convert:
+ 140               	.LFB9:
   59:main.c        **** 
-  60:main.c        **** 	ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX0));
- 146               		.loc 1 60 2 is_stmt 1 view .LVU36
- 147               		.loc 1 60 8 is_stmt 0 view .LVU37
- 148 004e 8091 7C00 		lds r24,124
- 149 0052 827F      		andi r24,lo8(-14)
- 150 0054 8093 7C00 		sts 124,r24
-  61:main.c        **** 	ADMUX |= (1 << MUX1);										//use ADC2
- 151               		.loc 1 61 2 is_stmt 1 view .LVU38
- 152               		.loc 1 61 8 is_stmt 0 view .LVU39
- 153 0058 8091 7C00 		lds r24,124
- 154 005c 8260      		ori r24,lo8(2)
- 155 005e 8093 7C00 		sts 124,r24
-  62:main.c        **** 
+  60:main.c        **** unsigned int
+  61:main.c        **** ADC_convert (void)
+  62:main.c        **** {
+ 141               		.loc 1 62 1 is_stmt 1 view -0
+ 142               		.cfi_startproc
+ 143               	/* prologue: function */
+ 144               	/* frame size = 0 */
+ 145               	/* stack size = 0 */
+ 146               	.L__stack_usage = 0
   63:main.c        **** 	ADCSRA |= (1 << ADSC);										//launch ADC
- 156               		.loc 1 63 2 is_stmt 1 view .LVU40
- 157               		.loc 1 63 9 is_stmt 0 view .LVU41
- 158 0062 8091 7A00 		lds r24,122
- 159 0066 8064      		ori r24,lo8(64)
- 160 0068 8093 7A00 		sts 122,r24
-  64:main.c        **** 
-  65:main.c        **** //    uint16_t  timer = 0;
-  66:main.c        **** //    char message[6][5] = {"FAUL", "HEAT", "COLD", "1234", " HI ", " LO "};
-  67:main.c        **** //    char word[4];
-  68:main.c        **** //    int8_t  j = 0;
+ 147               		.loc 1 63 2 view .LVU31
+ 148               		.loc 1 63 9 is_stmt 0 view .LVU32
+ 149 0000 8091 7A00 		lds r24,122
+ 150 0004 8064      		ori r24,lo8(64)
+ 151 0006 8093 7A00 		sts 122,r24
+  64:main.c        **** 	while((ADCSRA & (1<<ADSC)));
+ 152               		.loc 1 64 2 is_stmt 1 view .LVU33
+ 153               	.L5:
+ 154               		.loc 1 64 29 discriminator 1 view .LVU34
+ 155               		.loc 1 64 9 is_stmt 0 discriminator 1 view .LVU35
+ 156 000a 8091 7A00 		lds r24,122
+ 157               		.loc 1 64 7 discriminator 1 view .LVU36
+ 158 000e 86FD      		sbrc r24,6
+ 159 0010 00C0      		rjmp .L5
+  65:main.c        **** 
+  66:main.c        **** 	return (unsigned int) ADC;
+ 160               		.loc 1 66 2 is_stmt 1 view .LVU37
+ 161               		.loc 1 66 9 is_stmt 0 view .LVU38
+ 162 0012 8091 7800 		lds r24,120
+ 163 0016 9091 7900 		lds r25,120+1
+ 164               	/* epilogue start */
+  67:main.c        **** }
+ 165               		.loc 1 67 1 view .LVU39
+ 166 001a 0895      		ret
+ 167               		.cfi_endproc
+ 168               	.LFE9:
+ 170               		.section	.text.startup.main,"ax",@progbits
+ 171               	.global	main
+ 173               	main:
+ 174               	.LFB10:
+  68:main.c        **** 
   69:main.c        **** 
-  70:main.c        **** 
-  71:main.c        **** 
-  72:main.c        ****     ind_init();
- 161               		.loc 1 72 5 is_stmt 1 view .LVU42
- 162 006c 0E94 0000 		call ind_init
- 163               	.LVL0:
-  73:main.c        ****     tim1_init();
- 164               		.loc 1 73 5 view .LVU43
- 165 0070 0E94 0000 		call tim1_init
- 166               	.LVL1:
+  70:main.c        **** int main( void )
+  71:main.c        **** {
+ 175               		.loc 1 71 1 is_stmt 1 view -0
+ 176               		.cfi_startproc
+ 177               	/* prologue: function */
+ 178               	/* frame size = 0 */
+ 179               	/* stack size = 0 */
+ 180               	.L__stack_usage = 0
+  72:main.c        **** 	DDRD |= (1 << 5) | (1 << 6) | (1 << 7);						//test ADC
+ 181               		.loc 1 72 2 view .LVU41
+ 182               		.loc 1 72 7 is_stmt 0 view .LVU42
+ 183 0000 8AB1      		in r24,0xa
+ 184 0002 806E      		ori r24,lo8(-32)
+ 185 0004 8AB9      		out 0xa,r24
+  73:main.c        **** 	PORTD &= ~( (1 << 5) | (1 << 6) | (1 << 7) );
+ 186               		.loc 1 73 2 is_stmt 1 view .LVU43
+ 187               		.loc 1 73 8 is_stmt 0 view .LVU44
+ 188 0006 8BB1      		in r24,0xb
+ 189 0008 8F71      		andi r24,lo8(31)
+ 190 000a 8BB9      		out 0xb,r24
   74:main.c        **** 
-  75:main.c        ****     sei();
- 167               		.loc 1 75 5 view .LVU44
- 168               	/* #APP */
- 169               	 ;  75 "main.c" 1
- 170 0074 7894      		sei
- 171               	 ;  0 "" 2
- 172               	/* #NOAPP */
- 173               	.L4:
+  75:main.c        **** 	DDRC &= ~(1 << 2);											//working ADC port
+ 191               		.loc 1 75 2 is_stmt 1 view .LVU45
+ 192               		.loc 1 75 7 is_stmt 0 view .LVU46
+ 193 000c 3A98      		cbi 0x7,2
   76:main.c        **** 
-  77:main.c        ****     while( 1 )
- 174               		.loc 1 77 5 view .LVU45
-  78:main.c        ****     {
-  79:main.c        ****     	/*
-  80:main.c        ****             for( int8_t i = 0; i < 4; i++ )
-  81:main.c        ****             {
-  82:main.c        ****                 word[i] = message[j][i];
-  83:main.c        ****             }
+  77:main.c        **** 	unsigned int adc_value;
+ 194               		.loc 1 77 2 is_stmt 1 view .LVU47
+  78:main.c        **** 
+  79:main.c        **** 
+  80:main.c        **** //    uint16_t  timer = 0;
+  81:main.c        **** //    char message[6][5] = {"FAUL", "HEAT", "COLD", "1234", " HI ", " LO "};
+  82:main.c        **** //    char word[4];
+  83:main.c        **** //    int8_t  j = 0;
   84:main.c        **** 
   85:main.c        **** 
-  86:main.c        ****             if( timer_counter - timer >= 2000 )
-  87:main.c        ****             {
-  88:main.c        **** 
-  89:main.c        ****                 timer = timer_counter;
+  86:main.c        **** 
+  87:main.c        ****     ind_init();
+ 195               		.loc 1 87 5 view .LVU48
+ 196 000e 0E94 0000 		call ind_init
+ 197               	.LVL0:
+  88:main.c        ****     tim1_init();
+ 198               		.loc 1 88 5 view .LVU49
+ 199 0012 0E94 0000 		call tim1_init
+ 200               	.LVL1:
+  89:main.c        ****     ADC_Init();
+ 201               		.loc 1 89 5 view .LVU50
+ 202 0016 0E94 0000 		call ADC_Init
+ 203               	.LVL2:
   90:main.c        **** 
-  91:main.c        ****                 j += 1;
+  91:main.c        ****     sei();
+ 204               		.loc 1 91 5 view .LVU51
+ 205               	/* #APP */
+ 206               	 ;  91 "main.c" 1
+ 207 001a 7894      		sei
+ 208               	 ;  0 "" 2
+ 209               	/* #NOAPP */
+ 210               	.L8:
   92:main.c        **** 
-  93:main.c        ****                 if( j > 6 )
-  94:main.c        ****                 {
-  95:main.c        ****                     j = 0;
-  96:main.c        ****                 }
-  97:main.c        ****             }
-  98:main.c        **** 
-  99:main.c        ****             ind_print_string(word);
- 100:main.c        **** //            led_timer();
+  93:main.c        ****     while( 1 )
+ 211               		.loc 1 93 5 view .LVU52
+  94:main.c        ****     {
+  95:main.c        ****     	/*
+  96:main.c        ****             for( int8_t i = 0; i < 4; i++ )
+  97:main.c        ****             {
+  98:main.c        ****                 word[i] = message[j][i];
+  99:main.c        ****             }
+ 100:main.c        **** 
  101:main.c        **** 
- 102:main.c        ****     	 */
- 103:main.c        ****     	if (ADCSRA & (1 << 4))
- 175               		.loc 1 103 6 view .LVU46
- 176               		.loc 1 103 10 is_stmt 0 view .LVU47
- 177 0076 8091 7A00 		lds r24,122
- 178               		.loc 1 103 9 view .LVU48
- 179 007a 84FF      		sbrs r24,4
- 180 007c 00C0      		rjmp .L4
- 104:main.c        ****     	{
- 105:main.c        ****     		if (ADC >= 600)
- 181               		.loc 1 105 7 is_stmt 1 view .LVU49
- 182               		.loc 1 105 11 is_stmt 0 view .LVU50
- 183 007e 8091 7800 		lds r24,120
- 184 0082 9091 7900 		lds r25,120+1
- 185               		.loc 1 105 10 view .LVU51
- 186 0086 8835      		cpi r24,88
- 187 0088 9240      		sbci r25,2
- 188 008a 00F0      		brlo .L5
- 106:main.c        ****     		{
- 107:main.c        ****     			PORTD |= (1 << 5);
- 189               		.loc 1 107 8 is_stmt 1 view .LVU52
- 190               		.loc 1 107 14 is_stmt 0 view .LVU53
- 191 008c 5D9A      		sbi 0xb,5
- 108:main.c        ****     			PORTD &= ~((1 << 6) | (1 << 7));
- 192               		.loc 1 108 8 is_stmt 1 view .LVU54
- 193               		.loc 1 108 14 is_stmt 0 view .LVU55
- 194 008e 8BB1      		in r24,0xb
- 195 0090 8F73      		andi r24,lo8(63)
- 196 0092 8BB9      		out 0xb,r24
- 197               	.L5:
- 109:main.c        ****     		}
- 110:main.c        ****     		if (ADC >= 600 && ADC < 520)
- 198               		.loc 1 110 7 is_stmt 1 view .LVU56
- 199               		.loc 1 110 11 is_stmt 0 view .LVU57
- 200 0094 8091 7800 		lds r24,120
- 201 0098 9091 7900 		lds r25,120+1
- 202               		.loc 1 110 10 view .LVU58
- 203 009c 8835      		cpi r24,88
- 204 009e 9240      		sbci r25,2
- 205 00a0 00F0      		brlo .L6
- 206               		.loc 1 110 25 discriminator 1 view .LVU59
- 207 00a2 8091 7800 		lds r24,120
- 208 00a6 9091 7900 		lds r25,120+1
- 209               		.loc 1 110 22 discriminator 1 view .LVU60
- 210 00aa 8830      		cpi r24,8
- 211 00ac 9240      		sbci r25,2
- 212 00ae 00F4      		brsh .L6
- 111:main.c        ****     		{
- 112:main.c        ****     			PORTD |= (1 << 6);
- 213               		.loc 1 112 8 is_stmt 1 view .LVU61
- 214               		.loc 1 112 14 is_stmt 0 view .LVU62
- 215 00b0 5E9A      		sbi 0xb,6
- 113:main.c        ****     			PORTD &= ~((1 << 5) | (1 << 7));
- 216               		.loc 1 113 8 is_stmt 1 view .LVU63
- 217               		.loc 1 113 14 is_stmt 0 view .LVU64
- 218 00b2 8BB1      		in r24,0xb
- 219 00b4 8F75      		andi r24,lo8(95)
- 220 00b6 8BB9      		out 0xb,r24
- 221               	.L6:
- 114:main.c        ****     		}
- 115:main.c        ****     		if (ADC < 520)
- 222               		.loc 1 115 7 is_stmt 1 view .LVU65
- 223               		.loc 1 115 11 is_stmt 0 view .LVU66
- 224 00b8 8091 7800 		lds r24,120
- 225 00bc 9091 7900 		lds r25,120+1
- 226               		.loc 1 115 10 view .LVU67
- 227 00c0 8830      		cpi r24,8
- 228 00c2 9240      		sbci r25,2
- 229 00c4 00F4      		brsh .L7
- 116:main.c        ****     		{
- 117:main.c        ****     			PORTD |= (1 << 7);
- 230               		.loc 1 117 8 is_stmt 1 view .LVU68
- 231               		.loc 1 117 14 is_stmt 0 view .LVU69
- 232 00c6 5F9A      		sbi 0xb,7
- 118:main.c        ****     			PORTD &= ~((1 << 5) | (1 << 6));
- 233               		.loc 1 118 8 is_stmt 1 view .LVU70
- 234               		.loc 1 118 14 is_stmt 0 view .LVU71
- 235 00c8 8BB1      		in r24,0xb
- 236 00ca 8F79      		andi r24,lo8(-97)
- 237 00cc 8BB9      		out 0xb,r24
- 238               	.L7:
- 119:main.c        ****     		}
+ 102:main.c        ****             if( timer_counter - timer >= 2000 )
+ 103:main.c        ****             {
+ 104:main.c        **** 
+ 105:main.c        ****                 timer = timer_counter;
+ 106:main.c        **** 
+ 107:main.c        ****                 j += 1;
+ 108:main.c        **** 
+ 109:main.c        ****                 if( j > 6 )
+ 110:main.c        ****                 {
+ 111:main.c        ****                     j = 0;
+ 112:main.c        ****                 }
+ 113:main.c        ****             }
+ 114:main.c        **** 
+ 115:main.c        ****             ind_print_string(word);
+ 116:main.c        **** //            led_timer();
+ 117:main.c        **** 
+ 118:main.c        ****     	 */
+ 119:main.c        ****     	adc_value = ADC_convert();
+ 212               		.loc 1 119 6 view .LVU53
+ 213               		.loc 1 119 18 is_stmt 0 view .LVU54
+ 214 001c 0E94 0000 		call ADC_convert
+ 215               	.LVL3:
  120:main.c        **** 
- 121:main.c        ****     		ADCSRA |= (1 << 4);
- 239               		.loc 1 121 7 is_stmt 1 view .LVU72
- 240               		.loc 1 121 14 is_stmt 0 view .LVU73
- 241 00ce 8091 7A00 		lds r24,122
- 242 00d2 8061      		ori r24,lo8(16)
- 243 00d4 8093 7A00 		sts 122,r24
- 244 00d8 00C0      		rjmp .L4
- 245               		.cfi_endproc
- 246               	.LFE8:
- 248               		.section	.bss.timer_counter,"aw",@nobits
- 251               	timer_counter:
- 252 0000 0000      		.zero	2
- 253               		.text
- 254               	.Letext0:
- 255               		.file 2 "c:\\bin\\avr-gcc-8.3.0-x64-mingw\\lib\\gcc\\avr\\8.3.0\\include\\stdint-gcc.h"
- 256               		.file 3 "./drivers/indicator.h"
+ 121:main.c        **** 		if (adc_value > 307)
+ 216               		.loc 1 121 3 is_stmt 1 view .LVU55
+ 217               		.loc 1 121 6 is_stmt 0 view .LVU56
+ 218 0020 8433      		cpi r24,52
+ 219 0022 21E0      		ldi r18,1
+ 220 0024 9207      		cpc r25,r18
+ 221 0026 00F0      		brlo .L9
+ 122:main.c        **** 		{
+ 123:main.c        **** 			PORTD |= (1 << 5);
+ 222               		.loc 1 123 4 is_stmt 1 view .LVU57
+ 223               		.loc 1 123 10 is_stmt 0 view .LVU58
+ 224 0028 5D9A      		sbi 0xb,5
+ 124:main.c        **** 			PORTD &= ~((1 << 6) | (1 << 7));
+ 225               		.loc 1 124 4 is_stmt 1 view .LVU59
+ 226               		.loc 1 124 10 is_stmt 0 view .LVU60
+ 227 002a 8BB1      		in r24,0xb
+ 228               	.LVL4:
+ 229               		.loc 1 124 10 view .LVU61
+ 230 002c 8F73      		andi r24,lo8(63)
+ 231               	.L12:
+ 125:main.c        **** 		}
+ 126:main.c        **** 		else
+ 127:main.c        **** 		if (adc_value <= 307 && adc_value >= 266)
+ 128:main.c        **** 		{
+ 129:main.c        **** 			PORTD |= (1 << 6);
+ 130:main.c        **** 			PORTD &= ~((1 << 5) | (1 << 7));
+ 131:main.c        **** 		}
+ 132:main.c        **** 		else
+ 133:main.c        **** 		if (adc_value < 266)
+ 134:main.c        **** 		{
+ 135:main.c        **** 			PORTD |= (1 << 7);
+ 136:main.c        **** 			PORTD &= ~((1 << 5) | (1 << 6));
+ 232               		.loc 1 136 10 view .LVU62
+ 233 002e 8BB9      		out 0xb,r24
+ 234 0030 00C0      		rjmp .L8
+ 235               	.LVL5:
+ 236               	.L9:
+ 127:main.c        **** 		{
+ 237               		.loc 1 127 3 is_stmt 1 view .LVU63
+ 127:main.c        **** 		{
+ 238               		.loc 1 127 24 is_stmt 0 view .LVU64
+ 239 0032 8A50      		subi r24,10
+ 240 0034 9140      		sbci r25,1
+ 241               	.LVL6:
+ 127:main.c        **** 		{
+ 242               		.loc 1 127 6 view .LVU65
+ 243 0036 8A97      		sbiw r24,42
+ 244 0038 00F4      		brsh .L11
+ 129:main.c        **** 			PORTD &= ~((1 << 5) | (1 << 7));
+ 245               		.loc 1 129 4 is_stmt 1 view .LVU66
+ 129:main.c        **** 			PORTD &= ~((1 << 5) | (1 << 7));
+ 246               		.loc 1 129 10 is_stmt 0 view .LVU67
+ 247 003a 5E9A      		sbi 0xb,6
+ 130:main.c        **** 		}
+ 248               		.loc 1 130 4 is_stmt 1 view .LVU68
+ 130:main.c        **** 		}
+ 249               		.loc 1 130 10 is_stmt 0 view .LVU69
+ 250 003c 8BB1      		in r24,0xb
+ 251               	.LVL7:
+ 130:main.c        **** 		}
+ 252               		.loc 1 130 10 view .LVU70
+ 253 003e 8F75      		andi r24,lo8(95)
+ 254 0040 00C0      		rjmp .L12
+ 255               	.LVL8:
+ 256               	.L11:
+ 133:main.c        **** 		{
+ 257               		.loc 1 133 3 is_stmt 1 view .LVU71
+ 135:main.c        **** 			PORTD &= ~((1 << 5) | (1 << 6));
+ 258               		.loc 1 135 4 view .LVU72
+ 135:main.c        **** 			PORTD &= ~((1 << 5) | (1 << 6));
+ 259               		.loc 1 135 10 is_stmt 0 view .LVU73
+ 260 0042 5F9A      		sbi 0xb,7
+ 261               		.loc 1 136 4 is_stmt 1 view .LVU74
+ 262               		.loc 1 136 10 is_stmt 0 view .LVU75
+ 263 0044 8BB1      		in r24,0xb
+ 264               	.LVL9:
+ 265               		.loc 1 136 10 view .LVU76
+ 266 0046 8F79      		andi r24,lo8(-97)
+ 267 0048 00C0      		rjmp .L12
+ 268               		.cfi_endproc
+ 269               	.LFE10:
+ 271               		.section	.bss.timer_counter,"aw",@nobits
+ 274               	timer_counter:
+ 275 0000 0000      		.zero	2
+ 276               		.text
+ 277               	.Letext0:
+ 278               		.file 2 "c:\\bin\\avr-gcc-8.3.0-x64-mingw\\lib\\gcc\\avr\\8.3.0\\include\\stdint-gcc.h"
+ 279               		.file 3 "./drivers/indicator.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 main.c
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccMKaxVx.s:2      *ABS*:000000000000003e __SP_H__
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccMKaxVx.s:3      *ABS*:000000000000003d __SP_L__
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccMKaxVx.s:4      *ABS*:000000000000003f __SREG__
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccMKaxVx.s:5      *ABS*:0000000000000000 __tmp_reg__
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccMKaxVx.s:6      *ABS*:0000000000000001 __zero_reg__
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccMKaxVx.s:13     .text.__vector_11:0000000000000000 __vector_11
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccbgUqo1.s:2      *ABS*:000000000000003e __SP_H__
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccbgUqo1.s:3      *ABS*:000000000000003d __SP_L__
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccbgUqo1.s:4      *ABS*:000000000000003f __SREG__
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccbgUqo1.s:5      *ABS*:0000000000000000 __tmp_reg__
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccbgUqo1.s:6      *ABS*:0000000000000001 __zero_reg__
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccbgUqo1.s:13     .text.__vector_11:0000000000000000 __vector_11
                             *ABS*:0000000000000002 __gcc_isr.n_pushed.001
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccMKaxVx.s:251    .bss.timer_counter:0000000000000000 timer_counter
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccMKaxVx.s:46     .text.tim1_init:0000000000000000 tim1_init
-C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccMKaxVx.s:88     .text.startup.main:0000000000000000 main
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccbgUqo1.s:274    .bss.timer_counter:0000000000000000 timer_counter
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccbgUqo1.s:46     .text.tim1_init:0000000000000000 tim1_init
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccbgUqo1.s:88     .text.ADC_Init:0000000000000000 ADC_Init
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccbgUqo1.s:139    .text.ADC_convert:0000000000000000 ADC_convert
+C:\Users\YB38D~1.VIR\AppData\Local\Temp\ccbgUqo1.s:173    .text.startup.main:0000000000000000 main
 
 UNDEFINED SYMBOLS
 ind_init
