@@ -58,6 +58,7 @@ IPATH   =  .                        \
            proc                     
 
 ##Link
+$(BINDIR)/$(TARGET).elf: $(OBJDIR)/Analog_to_digital_converter.o
 $(BINDIR)/$(TARGET).elf: $(OBJDIR)/indicator.o
 $(BINDIR)/$(TARGET).elf: $(OBJDIR)/main.o
 

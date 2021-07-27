@@ -4,7 +4,7 @@
 #include <avr/interrupt.h>
 
 #include "indicator.h"
-
+#include "Analog_to_digital_converter.h"
 
 #define IND_PORT                    PORTD
 
@@ -38,6 +38,8 @@ static const uint8_t ind_ascii_table[/* 65 */] =
         0xa7 /* [ */, 0x9b /* \ */, 0xb3 /* ] */, 0xfe /* ^ */,
         0xf7 /* _ */, 0x9f /* ` */,
 };
+
+
 
 static uint8_t  indicator_data[4];
 static uint8_t  ind_led_state;
@@ -103,6 +105,7 @@ ind_print_dec( uint16_t number )
 {
     uint8_t  string[4];
     uint8_t step;
+    float voltage;
 
     string[0] = number / 1000;
     string[1] = number % 1000 / 100;
@@ -112,20 +115,42 @@ ind_print_dec( uint16_t number )
     step = ind_number_step_get(number);
     step = 4 - step;
 
+    voltage = Uvh_res();	// * 4;
 
     for( int8_t i = 0; i < 4; i++ )
     {
-        if( i < step )
-        {
-            string[i] = ind_ascii_table[0];
-        }
-        else
-        {
-            string[i] = ind_ascii_table[string[i]+16];
-        }
+//        if( i < step )
+//        {
+//            string[i] = ind_ascii_table[0];
+//        }
+//        else
+//        {
+//            string[i] = ind_ascii_table[string[i]+16];
+//        }
+
+    	if ( i == 1 && voltage < 10 )
+    	{
+    		string[i] = ind_ascii_table[string[i]+16];
+    		string[i] &= ind_ascii_table[14];
+    	}
+    	else
+    	if (i == 1)
+    	{
+    		string[i] = ind_ascii_table[string[i]+16];
+    	}
+    	else
+    	if ( i == 2 && voltage >= 10 )
+		{
+    		string[i] = ind_ascii_table[string[i]+16];
+    		string[i] &= ind_ascii_table[14];
+		}
+    	else
+    	{
+    		string[i] = ind_ascii_table[string[i]+16];
+    	}
 
 
- //       string[i] += 48;
+ //       string[i] += 48; //---
     }
 
 

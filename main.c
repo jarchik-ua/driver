@@ -8,13 +8,16 @@
 #include <util/delay.h>
 
 #include <drivers/indicator.h>
-
+#include <drivers/Analog_to_digital_converter.h>
 
 
 #define TIM1_OCR_PRESC      ( 15 ) // 1,0s for presc 1024
 
 
 static uint16_t  timer_counter = 0;
+unsigned int k1 = 100;
+
+float Uvh_result;
 
 
 
@@ -42,30 +45,6 @@ tim1_init( void )
 }
 
 
-void
-ADC_Init( void )
-{
-	ADCSRA |= (1 << ADEN);										//we allow the ADC to work
-
-	ADCSRA |= (1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2);		//frequency of discrediting = 125k Hz
-
-	ADMUX &= ~((1 << REFS1) | (1 << REFS0));
-
-	ADMUX &= ~(1 << ADLAR); 									//right-hand alignment
-
-	ADMUX &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX0));
-	ADMUX |= (1 << MUX1);										//use ADC2
-}
-
-unsigned int
-ADC_convert (void)
-{
-	ADCSRA |= (1 << ADSC);										//launch ADC
-	while((ADCSRA & (1<<ADSC)));
-
-	return (unsigned int) ADC;
-}
-
 
 int main( void )
 {
@@ -74,7 +53,6 @@ int main( void )
 
 	DDRC &= ~(1 << 2);											//working ADC port
 
-	unsigned int adc_value;
 
 
 //    uint16_t  timer = 0;
@@ -92,25 +70,20 @@ int main( void )
 
     while( 1 )
     {
-    	adc_value = ADC_convert();
 
-		if (adc_value > 307)
-		{
-			PORTD |= (1 << 5);
-			PORTD &= ~((1 << 6) | (1 << 7));
-		}
-		else
-		if (adc_value <= 307 && adc_value >= 266)
-		{
-			PORTD |= (1 << 6);
-			PORTD &= ~((1 << 5) | (1 << 7));
-		}
-		else
-		if (adc_value < 266)
-		{
-			PORTD |= (1 << 7);
-			PORTD &= ~((1 << 5) | (1 << 6));
-		}
+    	Uvh_result = Uvh_res();
+
+    	if ( Uvh_result < 10 )
+    	{
+    		k1 = 100;
+    	}
+    	else
+    	{
+    		k1 = 10;
+    	}
+
+    	ind_print_dec ( Uvh_result * k1 );
+
 
 
     }
