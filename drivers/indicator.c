@@ -259,8 +259,8 @@ indicator_data_send( void )
     /** DIGIT = 2 */
 
 
-
 }
+
 
 
 void

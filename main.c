@@ -139,7 +139,6 @@ int main( void )
 
     	Uvh_result = adc_value_get();
 
-
 //    	if ( Uvh_result < 10 )
 //    	{
 //    		k1 = 100;
