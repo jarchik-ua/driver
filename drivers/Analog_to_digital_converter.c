@@ -15,7 +15,7 @@
 unsigned int adc_value;
 float Uvh = 0;
 
-const int Koef = 1;
+const float Koef = 5.38; 			//5.26
 
 
 void
@@ -50,5 +50,5 @@ Uvh_res ( void )
 
 	Uvh = ( adc_value * 5.00 * Koef) / 1024;
 
-	return Uvh * 4;
+	return Uvh;
 }
