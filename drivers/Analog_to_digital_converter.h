@@ -10,9 +10,9 @@
 
 
 
-void ADC_Init( void );
-unsigned int ADC_convert ( void );
-float Uvh_res ( void );
+uint16_t  adc_value_get ( void );
+
+void adc_init( void );
 
 
 #endif /* DRIVERS_ANALOG_TO_DIGITAL_CONVERTER_H_ */

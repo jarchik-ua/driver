@@ -115,7 +115,7 @@ ind_print_dec( uint16_t number )
     step = ind_number_step_get(number);
     step = 4 - step;
 
-    voltage = Uvh_res();	// * 4;
+    voltage = adc_value_get();	// * 4;
 
     for( int8_t i = 0; i < 4; i++ )
     {
