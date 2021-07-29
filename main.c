@@ -58,6 +58,7 @@ tim1_init( void )
 }
 
 
+
 //  среднее арифметическое для int
 int
 midArifm( int vector )
